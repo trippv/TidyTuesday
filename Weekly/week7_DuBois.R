@@ -2,8 +2,13 @@
 
 library(tidyverse)
 library(here)
-library(showtext)
 
+font_add_google("Quattrocento Sans", "Quattrocento Sans")
+
+font_add_google("Mansalva")
+
+showtext_auto() 
+windows() 
 
 
 # 1. Get data -------------------------------------------------------------
@@ -34,6 +39,10 @@ labels <- freed_slaves %>%
 
 
 
+
+fontfam <- "Quattrocento Sans"
+
+
 ggplot(free_long, aes( x = Year, y = Prop, fill = Slave))+
   #Add area. Add show.lengend to remove legend
   geom_area(show.legend = FALSE)+
@@ -50,27 +59,28 @@ ggplot(free_long, aes( x = Year, y = Prop, fill = Slave))+
   #Set names and scale to NULL to remove it completely
   scale_y_continuous(expand = c(0, 0), labels = NULL, name = NULL) +
   #add Slaves label
-  geom_text(aes(x = 1830, y = 55, label = "SLAVES\nESCLAVES"), size = 5, color = "white", fontface = "bold") +
+  geom_text(aes(x = 1830, y = 55, label = "SLAVES\nESCLAVES"), size = 12, color = "white", fontface = "bold", family = fontfam) +
   
   #add Free label
-  geom_text(aes(x = 1830, y = 95, label = "FREE - LIBRE"), size = 5, col = colors[2], fontface = "bold")+
+  geom_text(aes(x = 1830, y = 95, label = "FREE - LIBRE"), size = 12, col = colors[2], fontface = "bold", family = fontfam )+
   #add perc labels
   geom_text(data = labels, 
-            aes(x = Year, y = Slave_off, label =perc), inherit.aes = FALSE, fontface = "bold")+
+            aes(x = Year, y = Slave_off, label =perc), inherit.aes = FALSE,size =4, 
+            fontface = "bold", family = fontfam)+
   labs(title = title,
        subtitle = subtitle,
        caption = caption)+
   theme(
-    plot.margin = margin(20, 80, 20, 80),
+    plot.margin = margin(0, 5, 0 , 5, unit = "mm"),
     plot.title.position = "plot",
-    plot.title = element_text(hjust = 0.5, margin = margin(t = 10, b = 30)),
-    plot.subtitle = element_text(hjust = 0.5,size = 7, margin = margin(t = 10, b = 30)),
-    plot.caption = element_text(hjust = 1, margin = margin(t = 10)),
+    plot.title = element_text(hjust = 0.5, margin = margin(t = 10, b = 30),size = 16, family = fontfam ),
+    plot.subtitle = element_text(hjust = 0.5,size = 12, margin = margin(t = 10, b = 30), family = fontfam),
+    plot.caption = element_text(hjust = 1, margin = margin(t = 10), family = fontfam ),
     plot.background = element_rect(fill = "#fcf5eb", color = NULL),
-    axis.text.x = element_text(size = 10, face = "bold"),
+    axis.text.x = element_text(size = 14, face = "bold"),
     panel.background = element_blank(),
     axis.ticks = element_blank(),
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank()) 
   
-ggsave(here("plots", "Week8_DuBois.png"), width = 120, height = 90,units = "mm", dpi = 150, scale = 2.15)
+ggsave(here("plots", "Week8_DuBois.png"), width = 90, height = 90,units = "mm", dpi = 150, scale = 2.15)
